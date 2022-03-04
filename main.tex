@@ -1,0 +1,310 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[a4paper,12pt,fontset=mac]{ctexbook}
+%beaulivre这个包是jing wen编写的，彩色书籍，但是调用有问题。
+
+% ------------------------------------------------------------------------------
+% Math - Warning: before cjkfonts (xeCJK) and other package loads fontspec
+% ------------------------------------------------------------------------------
+\usepackage{amsmath}
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+\newcommand{\irow}[3]{ % 行向量，输出 xi+yj+zk的形式，存在的问题是不能自动根据负数调整为-号
+  #1\mathbf{i}+#2\mathbf{j}+#3\mathbf{k}
+}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\def\d{{\mathrm{d}}}
+
+
+\usepackage{geometry}
+\geometry{left=2cm,right=2cm,top=3cm,bottom=3cm}
+
+
+%\usepackage{enumerate} %这个包不如enumitem,会不会引起冲突
+\usepackage{enumitem}
+% \setlist{nosep}
+\setlist[1]{labelindent=\parindent} % < Usually a good idea
+\setlist[itemize,1]{leftmargin=*,label = $\cdot$}
+\newlist{todolist}{itemize}{2} %todolist只有2级
+\setlist[todolist]{label=$\square$}
+
+
+% ------------------------------------------------------------------------------
+% customize the headers with fancyhdr package
+% ------------------------------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy} %默认的fancy header 
+\fancyfoot[R]{赵三金|2021}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrule}{
+  \vbox to 0pt {\makebox[\headwidth]{\dotfill}\vss}} %headrule使填充为dotfill
+% ------------------------------------------------------------------------------
+% Index package
+% ------------------------------------------------------------------------------
+% \usepackage{makeidx}
+% \makeindex
+
+%字体文件的使用还有emoji
+%\setmainfont{TeX Gyre Termes}
+
+\usepackage{siunitx} % 国际制单位的包
+\usepackage[version=4]{mhchem} %化学的包
+
+%好看的斜体分号
+\usepackage[nice]{nicefrac}
+
+%定理的运用
+\usepackage[english]{babel}
+\newtheorem{theorem}{Theorem}[section]      %定理
+\newtheorem{corollary}{Corollary}[theorem]  %结论
+\newtheorem{lemma}[theorem]{Lemma}          %引理
+\newtheorem{definition}[theorem]{Definition}%定义
+
+%插入多页的pdf
+\usepackage{pdfpages}
+
+%多项式运算的包
+\usepackage{polynom}
+
+%苹果imac系列新的配色
+\usepackage{xcolor}
+\definecolor{r1}{RGB}{255, 134, 116}
+\definecolor{b1}{RGB}{23, 171, 221}
+\definecolor{p1}{RGB}{212, 182, 214}
+\definecolor{g1}{RGB}{112, 226, 203}
+\definecolor{o1}{RGB}{223, 167, 67}
+
+%dvipsnames当中的颜色，没有能调用，自己重新定义了一下
+\definecolor{Orange}{RGB}{234,138,45}
+\definecolor{Yellow}{RGB}{240, 227, 0}
+\definecolor{SeaGreen}{RGB}{62, 179, 145}
+\definecolor{RedOrange}{RGB}{62, 179, 145}
+\definecolor{DarkOrange}{RGB}{255, 140, 2}
+\definecolor{YellowOrange}{RGB}{237, 152, 118}
+\definecolor{SkyBlue}{RGB}{30, 144, 254}
+
+
+%这个包需要编译两次
+% ------------------------------------------------------------------------------
+% load tocbibind to add contents,list of figures, list of tables and
+% bibliography into the toc
+% ------------------------------------------------------------------------------
+\usepackage{tocbibind}
+
+% ------------------------------------------------------------------------------
+% Needed to load images
+% ------------------------------------------------------------------------------
+\usepackage{graphicx}
+\graphicspath{{/Users/Johnson/OneDrive/吃饭的家伙/Johnson-Alevel/Alevel-Mathematics/notes/自编讲义/auximage/}}   % where to look for images
+
+\usepackage{wrapfig}
+\usepackage{caption}
+ %更简单好用的表格 \usepackage{tabularx}这里用tabularry代替了
+\usepackage{tabularray}
+\usepackage{multirow}
+
+\usepackage{framed}
+
+\usepackage{mathptmx}
+%这字体的数学公式是真的好看!!
+\DeclareMathSizes{12}{12}{7}{5} %声明数学公式当中的字体大小 分别是textstyle,displaystyle,scriptstyle, 
+
+% ------------------------------------------------------------------------------
+% for code example
+% ------------------------------------------------------------------------------
+% \usepackage{listings}
+% \definecolor{syntax_comment}{rgb}{0.72,0.14,0.15}	% red
+% \definecolor{syntax_key}{rgb}{0.05,0.5,0.07}
+% \definecolor{syntax_gray}{rgb}{0.5,0.5,0.5}
+% \definecolor{syntax_string}{rgb}{0.58,0,0.82}	% mauve
+% \definecolor{background}{rgb}{0.975,0.975,0.975}
+
+% \lstset{ %
+%   backgroundcolor=\color{background},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+%   basicstyle=\scriptsize\ttfamily, % the size of the fonts that are used for the code
+%   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+%   breaklines=true,                 % sets automatic line breaking
+%   captionpos=b,                    % sets the caption-position to bottom
+%   commentstyle=\itshape\color{syntax_comment},    % comment style
+% %  deletekeywords={...},            % if you want to delete keywords from the given language
+% %  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+%   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+% %  frame=single,                    % adds a frame around the code
+%   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+%   keywordstyle=\color{syntax_key},       % keyword style
+% %  language=Octave,                 % the language of the code
+% %  otherkeywords={*,...},           % if you want to add more keywords to the set
+%   numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+%   numbersep=5pt,                   % how far the line-numbers are from the code
+%   numberstyle=\tiny\color{syntax_gray}, % the style that is used for the line-numbers
+%   rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+%   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+%   showstringspaces=false,          % underline spaces within strings only
+%   showtabs=false,                  % show tabs within strings adding particular underscores
+%   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+%   stringstyle=\color{syntax_string},     % string literal style
+%   tabsize=2                        % sets default tabsize to 2 spaces
+% %  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+% }
+
+\setlength{\parindent}{2em} %段落第一行的缩进为0pt
+\setlength{\parskip}{1em} %两个段落之间的距离
+
+\usepackage{float} %为了图片是比较好的紧跟表达式
+
+\everymath{\displaystyle} %使用全局公式display style会更大更好看一点
+
+% ------------------------------------------------------------------------------
+% for long and nice table
+% ------------------------------------------------------------------------------
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{ltxtable}
+\usepackage{lipsum} %lorem ipsem的数字调用类似于blindtext包
+\usepackage{multicol} %文件当中的多栏
+\setlength{\columnsep}{0.8cm} 
+
+% ------------------------------------------------------------------------------
+% for compact item list
+% ------------------------------------------------------------------------------
+\usepackage{paralist}
+
+% ------------------------------------------------------------------------------
+% load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
+
+\usepackage{hyperref}
+\hypersetup{
+      colorlinks=true,
+      linkcolor=black,
+      filecolor=cyan,
+      urlcolor=b1,
+      citecolor=g1,
+}
+
+% ------------------------------------------------------------------------------
+% Glossaries, must be after hyperref
+% ------------------------------------------------------------------------------
+\usepackage[automake=immediate]{glossaries}
+\makeglossaries
+\input{content/glossaries}
+
+% font selection for mathematics with XeLaTeX, MUST after amsfonts
+%数学字体的包，调用有点问题。妈的，先暂时这样注释掉了
+%\usepackage[quiet]{fontspec}
+%\usepackage{mathspec}
+
+% \setmathsfont(Digits,Latin,Greek)[Numbers={Lining,Proportional}]{Minion Pro}
+
+% There's no italic sans-serif math font by default, but it's needed in this book
+% follow: http://tex.stackexchange.com/questions/77640/bold-italic-and-sans-serif-math-symbols
+% to define a \mathsfit{} macro
+%\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+%\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{sl}
+
+% ------------------------------------------------------------------------------
+% Localization setting
+% ------------------------------------------------------------------------------
+%\input{localization.tex}
+
+% Set Roboto and Source Code Pro, which are installed with TexLive, for western
+% fonts:
+\input{content/westernfonts.tex}
+
+\usepackage{setspace}
+\onehalfspacing{} %1.5倍行距
+
+\usepackage{tikz} % load TikZ/PGF
+%逻辑电路，思维导图，等tikz当中的包
+\usetikzlibrary{circuits.logic.US,positioning,decorations.pathreplacing,mindmap,backgrounds,math,calc}
+\tikzset{elegant/.style={smooth,thick,samples=100,cyan}}
+\tikzset{eaxis/.style={->,>=stealth}}
+
+\usepackage{pgfplots} % load PDFPlots
+\pgfplotsset{compat=1.17} %1.17的版本可能比较老了
+
+
+\usepackage{natbib} % 参考文献格式变成APA
+% ------------------------------------------------------------------------------
+
+\usepackage{tcolorbox} %带背景色的盒子用于放置Summary,Task,还有Practice
+\tcbuselibrary{breakable}
+
+\tcbset{width=\textwidth} %默认盒子的宽度
+\newenvironment{TaskBox} %任务盒子
+{\begin{tcolorbox}[breakable,colback=b1!30,colframe=b1,title=Task]} {\end{tcolorbox}}
+
+\newenvironment{ExampleBox} %Practice盒子
+{\begin{tcolorbox}[breakable,colback=g1!30,colframe=g1,title=Example]} {\end{tcolorbox}}
+
+
+\newenvironment{SummBox}
+{\begin{tcolorbox}[breakable,colback=r1!30,colframe=r1,title=Summary]} {\end{tcolorbox}}
+
+
+
+% The document body
+% ------------------------------------------------------------------------------
+
+\begin{document}
+
+\input{content/title}
+
+\frontmatter
+
+%\maketitle
+%\input{copyright}
+
+\tableofcontents
+%\listoffigures %图和表的编号，记得加caption
+%\listoftables
+
+\pagebreak
+
+%\input{author} %作者就不写了
+\input{content/userguide}
+
+\mainmatter
+\include{content/chap1-quadratics}
+\include{content/chap2-function}
+\include{content/chap3-coordinategeometry}
+\include{content/chap4-circularmeasure}
+\include{content/chap5-trig}
+\include{content/chap6-series}
+\include{content/chap7-differentiation}
+\include{content/chap8-integration}
+\include{content/chap9-ForceEquilibrium}
+\include{content/chap10-Kinematics}
+\include{content/chap11-Momentum}
+\include{content/chap12-NewtonLaw}
+\include{content/chap13-Workenergy}
+\include{content/chap14-Algebra}
+\include{content/chap15-ExpLog}
+\include{content/chap16-Furthertrig}
+\include{content/chap17-Furtherdifferentiation}
+\include{content/chap18-Furtherintegration}
+\include{content/chap19-numericalsolution}
+\include{content/chap20-vectors}
+\include{content/chap21-differentialequation}
+\include{content/chap22-complexnumber}
+\include{content/chap23-representationdata}
+\include{content/chap24-PermutationCombination}
+\include{content/chap25-Probability}
+\include{content/chap26-RandomVariable}
+\include{content/chap27-Binomialdistribution}
+\include{content/chap28-NormalDistribution}
+
+\backmatter 
+\bibliographystyle{apalike}
+%\bibliography{references} %要自己编一下参考references
+\printglossaries
+
+\appendix
+\input{content/acknowledge}
+
+\end{document}
