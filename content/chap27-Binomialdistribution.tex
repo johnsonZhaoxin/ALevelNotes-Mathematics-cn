@@ -1,0 +1,304 @@
+\chapter{概率分布模型}
+数学不光光是完成计算，更重要的在于对同一类问题的概括，而这些概括得出来的结果就是各种各样的定理Theorem，小定理Lemma，推导出来的二级引理Collary，还有各种各样的数学模型。
+
+在这个章节当中，我们主要探究离散随机变量的三种常见分布模型，分别是\gls{0-1distr}，\gls{bidistr}和\gls{geodistr}
+
+\section*{学习目标}
+\begin{todolist}
+	\item 理解0-1分布模型，二项分布模型，几何分布模型
+	\item 判断每种场景下适合的模型
+	\item 求算二项分布的概率，期望和方差
+	\item 求算几何分布的概率，期望和方差
+\end{todolist}
+\clearpage
+
+\section{0-1分布}
+\subsection*{定义}
+如\ref{subsec:Expectation}当中提到，0-1分布就是一个很简单的分布模型，也被称之为\gls{bernoullidistr}。其随机变量$X$只有两个取值，0或者1。我们可以称$X=1$为成功，概率为$p$。 失败的概率为$q=1-p$。
+比如一个灯泡能够连续照明超过5000小时计作成功，概率为$0.3$\\
+又或者是抛掷一个硬币，正面朝上计作成功，概率为$0.5$\\
+再比如，下雨天的时候赶地铁，到地铁站就有车计作成功，概率为$0.01$
+\subsection*{期望和方差}
+利用概率分布表，任意0-1分布的期望求算公式为:
+\[
+	E(X)=0\cdot (1-p) +1 \cdot p = p
+\]
+因此，方差的求算公式为：
+\[
+	Var(X) = 0^2\cdot (1-p) +1^2 \cdot p - p^2=p(1-p)
+\]
+虽然考试当中从来不考察0-1分布，但是它是后续两种分布的重要基石。需要做到快速分辨0-1分布，以及确定对应的概率。
+\clearpage
+
+\section{二项分布}
+这种分布模型是考试的重点，是将伯努利实验重复做$n$次。用随机变量$X$表示在这$n$次\gls{trial}中成功的次数。
+
+\subsection*{定义}
+沿用上面的例子，\\
+那么20个灯泡之中，有多少个灯泡可以持续照明超过5000小时。\\
+抛100个硬币，或者抛100次硬币，多少次正面朝上\\
+在157天下雨天当中，到站台就有车的天数等等。
+
+这些都是可以看成是一个二项分布的。
+二项分布的\emph{特征/满足的要求}是：
+\begin{itemize}
+	\item 试验重复的次数$n$是固定值
+	\item 每一次试验的结果都只有两个,0-1
+	\item 针对于每一次的成功的概率都是$p$，失败的概率为$1-p$或者$q$
+	\item 每一次试验之间的结果都是互相\emph{独立}的
+\end{itemize}
+
+\subsection*{概率求算}
+当已知一个随机变量服从二项分布的时候，会采用如下的手段进行标记：
+\[
+	X \sim B(n,p)
+\]
+其中含义也非常明确。字母$B$代表Binomial，括号里的两个参数代表重复实验的次数$n$，以及在一次实验中成功的概率$p$。如此精炼符号系统其实也造成了一定程度的理解。反正最简洁的方法就是将随机实验当成抛硬币$n$次，正面朝上的概率为$p$,表示总共有$X$次正面朝上。
+
+那么接下来就是对这个随机变量的进行概率求算了，取$n=5$作为一个例子。不难发现，$X=0$和$X=5$的求算是最简单的，分别是$(1-p)^5$和$p^5$。那么我们再求算一下$X=1$的概率，其含义是只有一次成功的概率。因此必定有四次失败。这五次的概率因为都是独立事件，所以概率可以使用乘法法则。$p\cdot (1-p)^4$。慢着，好像哪里不对，求5次当中成功了1次，但是这一次未必是第一次啊。因此还可以有$(1-p)\cdot p \cdot (1-p)^3 + (1-p)^2\cdot p \cdot (1-p)^2+(1-p)^3\cdot p \cdot (1-p)+(1-p)^4\cdot p$。分别表示第2、3、4、5次成功的概率。而将这些加起来得到$5\cdot p \cdot (1-p)^4$。其中的这个5不就是和二项展开式当中的$\binom{5}{1}$是完全一样的意义吗！因此这就是这种分布叫做\emph{二项}分布的原因了。类似的$X=4$的概率就是$\binom{5}{4}\cdot p^4\cdot(1-p)^1$。
+
+所以，以$n=5$为例，我们就可以列出$X\sim B(5,p)$的概率分布表，如下：
+\begin{table}[H]
+\centering  
+\begin{tblr}{
+	width=0.9\textwidth, %调整表格宽度
+	colspec={|l|[2pt]c|c|c|c|c|c|},
+	hspan=even, %设置一样长度
+	vspan=even,
+	}
+\hline 
+$x$ & $0$ & $1$ & $2$ & $3$ & $4$ & $5$ \\
+\hline
+$P(X=x)$ & $\binom{5}{0} p^0\cdot (1-p)^5$ & $\binom{5}{1} p^1\cdot (1-p)^4$ & $\binom{5}{2} p^2\cdot (1-p)^3$\\ \hline
+$x$ & $3$ & $4$ & $5$\\ \hline
+$P(X=x)$ & $\binom{5}{3} p^3\cdot (1-p)^2$ &$\binom{5}{4} p^4\cdot (1-p)^1$ & $\binom{5}{5} p^5\cdot (1-p)^0$ \hline
+\end{tblr}
+\end{table}
+
+这个表达式都可以用类似于之前的二项展开式写出来
+\[
+	P(X=r) = \binom{n}{r}\cdot p^r\cdot (1-p)^{n-r} \qquad 0\leqslant r \leqslant n
+\]
+
+这就是二项分布的定义求算，所以，如果一旦确定了某种实验属于二项分布，并且确定了两个参数——次数和概率。就可以直接套用公式进行概率的求算了。
+
+\begin{ExampleBox}
+Screws are sold in packets of 15. Faulty screws occur randomly. A large number of packets are tested for faulty screws and the mean number of faulty screws per packet is found to be 1.2. Find the probability that a packet cotians at most 2 faulty screws.\\
+\makebox{}\hfill Adapted from 2014 winter qp61 Q5
+\tcblower
+首先根据平均每包当中坏的螺丝数量为1.2个，可以得知，任何一个螺丝是坏的概率为$\frac{1.5}{12}=0.125$。这个哪怕基于常识也是可以确定的，不过后面在\ref{subsec:EandVar}当中会继续讨论。因此就可以认为$X$代表15个螺丝当中坏的螺丝数目。因此$X\sim B(15,0.125)$
+
+由于此题问最多两个坏螺丝，因此$P(X\leqslant2 )= P(X=0)+P(X=1)+P(X=2)$将0个，1个，2个坏螺丝出现的概率相加。因此最后结果为
+\[
+	0.875^15+15\times 0.125\times 0.875^{14}+105\times 0.125^2\times 0.875^{13} = 0.887
+\]
+\end{ExampleBox}
+
+\subsection*{二项分布的期望与方差}
+\label{subsec:EandVar}
+任意随机变量都可以求算期望和方差，二项分布也不例外
+
+\subsubsection*{期望求算}
+因此沿用随机变量的期望求算公式，可以得到化简之后的二项分布的期望公式：
+\[
+	E(X)/\mu = np
+\]
+因此，在刚才的那条题目当中，实际上1.2就是15个螺丝当中坏的数目的平均值也就是随机变量的期望，所以我们才反用该关系，求算1个螺丝是坏的概率$p = \frac{E(X)}{n}=0.125$。考试当中有的时候也是这样，并不直接给出概率，而是通过给出期望来反求概率，要能够做到识别并能够运用该公式
+
+\subsubsection*{方差}
+沿用随机变量的方差求算公式，可以得到化简之后的二项分布的方差公式：
+\[
+	Var(X)/\sigma^2 =np(1-p) 
+\]
+
+\begin{ExampleBox}
+考试当中并不要求理解两个公式，但是笔者还是认为能够自己尝试推导一下会更好。因此在这里给出证明过程。
+\tcblower
+\begin{flalign*}
+	E(X) &=0\cdot ^nC_0\cdot (1-p)^n +1\cdot ^nC_1\cdot p \cdot (1-p)^{n-1} +\ldots + n\cdot ^nC_n\cdot p^n \\
+		 &=p\cdot [1\cdot^nC_1\cdot (1-p)^{n-1} +2\cdot^nC_2\cdot p\cdot (1-p)^{n-2}+\ldots+n\cdot ^nC_n\cdot p^{n-1}]\\
+		 &=np\cdot [^{n-1}C_0\cdot(1-p)^n+^{n-1}C_1\cdot p \cdot(1-p)^n+\ldots +^{n-1}C_{n-1}\cdot p^{n-1}]\\
+		 &=np\cdot [p+(1-p)]^{n-1}\\
+		 &=np
+\end{flalign*}
+这里，我们利用了二项展开系数的一个小性质：
+\[
+	k\cdot ^n C_k = n\cdot ^{n-1} C_{k-1}
+\]
+难度不大，可以利用定义或者数学归纳法进行证明。
+
+因此可以证明二项分布的期望为$E(X)=np$
+
+下一步，证明方差为$Var(X)=np\cdot(1-p)$
+\begin{flalign*}
+	E(X) &=0^2\cdot ^nC_0\cdot (1-p)^n +1^2\cdot ^nC_1\cdot p \cdot (1-p)^{n-1} +\ldots + n^2\cdot ^nC_n\cdot p^n -(np)^2\\
+	&=\left(\sum_{k=1}^{n} k^2\cdot^nC_k\cdot p^k \cdot (1-p)^{n-k} \right)- (np)^2\\
+	&=\left(\sum_{k=1}^{n} k\cdot^nC_k\cdot p^k \cdot (1-p)^{n-k} +\sum_{k=1}^{n} (k^2-k)\cdot^nC_k\cdot p^k \cdot (1-p)^{n-k}\right)-(np)^2\\
+	&=np +\left(\sum_{k=1}^{n} (k-1)k\cdot^nC_k\cdot p^k \cdot (1-p)^{n-k}\right)-(np)^2\\
+	&=np + np\left(\sum_{k=1}^{n} (k-1)\cdot^{n-1}C_{k-1}\cdot p^{k-1} \cdot (1-p)^{n-k}\right)-(np)^2)\\
+	&=np + np(n-1)p\left(\sum_{k=1}^{n}\cdot^{n-2}C_{k-2}\cdot p^{k-2} \cdot (1-p)^{n-k}\right)-(np)^2\\
+	&=np +n(n-1)p^2\cdot [p+(1-p)]^{n-2} -(np)^2\\
+	&=np +n^2p^2-np^2-n^2p^2\\
+	&=np(1-p)
+\end{flalign*}
+QED
+
+方差的求算较为复杂，连续利用了两次$k\cdot ^nC_k = n \cdot ^{n-1}C_{k-1}$，为了方便理解，取较小的$n$值，进行推导。
+\end{ExampleBox}
+\clearpage
+
+
+\section{几何分布}
+几何分布和二项分布非常类似，都是基于重复执行0-1实验产生的随机变量。
+\subsection*{定义}
+与二项分布不同的地方在于，第一个是几何分布并不是执行固定次数的试验，而是不停地执行该试验直至成功为止。第二个是几何分布的随机变量不代表成功的次数，而是代表直至第一次成功总共所需的次数。第三个也就是带来的不同结果，二项分布的最小值可以为0，但是几何分布的最小值是1。二项分布存在有限个结果，最大为$n$，但是几何分布是无限的结果，因为可以重复无数多次依然不能成功。
+
+继续沿用上面的例子
+不停的测灯泡，直至得到一个可以持续照明超过5000小时的灯泡才停止实验。\\
+连续地抛硬币，直至正面朝上停止，需要抛掷的次数为$X$\\
+下雨天赶地铁，直至某一天到达站台上就可以直接上车，记录下这是第多少天。
+这些情况都是属于几何分布。
+
+因此可以计作
+\[
+	X\sim Geo(p)
+\]
+观察这种标记手段，Geo是Geometrical Distribution的缩写，$p$依旧是基础的0-1分布当中，成功一次的概率。但是仅有这一个参数，再回顾一遍，因为几何分布当中的随机变量代表第一次成功所用的次数。
+
+\subsection*{概率求算}
+按照既定流程，我们希望得到几何分布的概率大小。开始推导
+最少要1次才能成功，因此概率表达为$P(X=1)=p$
+第二次才能成功，$P(X=2)=(1-p)p$。好了，在这里就产生一个需要注意的点了，$p(1-p)$能不能算入第二次才成功？答案很明显是不能的，因为在这里并不是说成功一次失败一次。而是第一次试验必须要失败，然后才能执行第二次试验，并且成功。因此只能是$(1-p)p$。
+
+讨论$X=3$,$X=4$等情况下的概率分别为$(1-p)^2\cdot p$和$(1-p)^3\cdot p$，不难发现，其实就是前面的$n-1$次都是失败的，然后最后一次是成功的。利用\textbf{乘法法则}就可以得到几何分布的概率表达式
+\[
+	P(x=k)=(1-p)^{k-1}\cdot p \qquad k\geqslant 1
+\]
+而这个表达式已出现，聪明的小伙伴就明白为什么这种分布叫做几何分布了。我们把这个概率分布表写下来。
+\begin{table}[H]
+\centering
+\begin{tblr}{
+	colspec={|l|[2pt]c|c|c|c|c|c|},
+	hspan=even, %设置一样长度
+	vspan=even,
+	}
+\hline 
+$x$ & 1 & 2 & 3 & 4 & 5 & $\ldots$  \\
+\hline
+$P(X=x)$ & $p$ & $(1-p)p$ & $(1-p)^2p$ & $(1-p)^3p$ & $(1-p)^4p$ & $\ldots$  \\
+\hline
+\end{tblr}
+\end{table}
+
+随着随机变量的取值逐一增大，对应的概率\textbf{恰好}构成了一个以$p$为首项，以$1-p$作为公比的\textbf{Geometric Progression}！所以，这个恰好并不是巧合。就是因为每一次试验之间互相独立，所以可以使用乘法法则。并且由于指定只能是最后一次成功，因此没有其他的可能性。只能将$p$放在最后一次的位置上。借此就形成了几何分布。
+
+\subsection*{几何分布的期望与方差}
+还是常规流程，求算这种分布的期望与方差
+\subsubsection*{期望求算}
+可能有的人想，套公式就行了，so easy！这么说好像也对，但是我们再看一遍几何分布的概率分布表，利用$\sum x_i\cdot p_i$几何分布的随机变量$X$并不是有限的，是无限的！
+
+因此我们实际上计算的是一个无限求和，写成如下的表达式
+\[
+	\sum_{k=1}^{\infty} k\codt p(1-p)^{k-1}=1\cdot p +2\cdot p(1-p)+3\cdot p(1-p)^2+\ldots 
+\]
+这种表达式叫做级数Series，考纲当中并不要求掌握求算，因此我们只需要知道这个表达式的计算结果是$\frac{1}{p}$即可。因此，几何分布的期望求算公式为：
+\[
+	E(X)/\mu = \frac{1}{p}
+\]
+
+
+\subsubsection*{无限多的几何分布概率}
+虽然上面的无限多项求和不需要掌握，但是我们需要验证一下之前随机变量表的一个性质：所有概率之和为$1$。从这个角度稍微理解一下无限多项的级数求和的特征
+\begin{flalign*}
+	\sum_{k=1}^{\infty} p(1-p)^{k-1} &= p+p(1-p)+p(1-p)^2+\ldots\\
+	&=\frac{p\cdot (1-r^n)}{1-r}\\
+	&=\frac{p}{1-(1-p)}\cdot \left( 1- (1-p)^\infty\right)\\
+\end{flalign*}
+这不就是之前的等比数列的sum to infinity吗！因此为$1$。我们借用了这个来理解一下无限多项的求和的概念。
+
+\subsubsection*{几何分布的方差}
+还是同期望一样，几何分布的方差求算的难点是利用了无限多项的级数求和。这个部分并不需要掌握。考试当中也仅仅考到几何分布的期望就可以了。在这里给出公式，如果感兴趣可以查看\href{https://www.cs.cornell.edu/courses/cs280/2008sp/280wk11_x4.pdf}{几何分布的期望的推导}，然后用同样的方式可以推导方差。
+\[
+	Var(X)/\sigma^2 = \frac{1-p}{p^2}
+\]
+考试当中并不考察几何分布的方差，因此这一小节仅作为阅读材料。
+
+\clearpage
+
+\section{例题应用}
+S1的考试当中，二项分布和几何分布是重点内容。需要能够做到以下的几点
+\begin{todolist}
+	\item 求算某一种二项分布取特定值的概率
+	\item 求算二项分布当中至少，至多等类型的概率
+	\item 求算二项分布的期望或者方差，或者已知期望方差概率反求试验次数$n$和概率$p$
+	\item 求算几何分布取特定值的概率
+	\item 求算几何分布当中，至少，至多等类型的概率
+	\item 求算几何分布的期望，或者已知期望反求概率
+	\item 将几何分布和其他的概率知识点结合的考察，例如求算$P(X=3|X\leqslant4)$等条件概率
+\end{todolist}
+
+\subsection*{二项分布例题}
+\begin{ExampleBox}
+In a certain country, 68\% of households have a printer. Find the probability that, in a random sample of 8 households, 5, 6 or 7 households have a printer.\\
+\makebox{}\hfill Adapted from 2015 summer qp61 Q6
+\tcblower
+分析题目，不难发现是一个经典的二项分布模型。其中基础的0-1分布为无打印机和有打印机，概率分别为$0.32$和$0.68$。而这个模型当中，重复的次数为$8$次。因此可以记$X$为这八家当中有打印机的数量。显然$X\sim B(8,0.68)$\\
+
+因此题目当中所求的5，6，7就直接用二项分布的概率求算公式
+\[
+	^8C_5 \times 0.68^5 \times 0.32^3+^8C_6 \times 0.68^6 \times 0.32^2+^8C_7 \times 0.68^7 \times 0.32^1 = 0.7224
+\]
+\end{ExampleBox}
+\clearpage
+
+\begin{ExampleBox}
+In a certain country, on average one student in ﬁve has blue eyes.For a random selection of $n$ students, the probability that none of the students has blue eyes is less than $0.001$. Find the least possible value of $n$.
+\makebox{}\hfill Adapted from 2013 summer qp63 Q4
+\tcblower
+此题是经典的已知概率，求算参数的题目。依旧是一个二项分布。记$X$为这$n$个学生当中有蓝眼睛的人数。那么$X\sim B(n,\frac{1}{5})$。其中None说明$P(X=0)<0.001$。
+
+因此列出概率求算公式$^nC_0 \cdot(\frac{4}{5})^n < 0.001$。利用指对数运算，可以求出
+\[
+	n>\log_{0.8} 0.0001 = 30.95
+\]
+因此$n$的最小值为31人
+\end{ExampleBox}
+无论形式怎么多变，只要能够确定模型，明确相关的条件信息，带入到对应的公式当中，就必然能够做对这些题目。
+
+
+
+\subsection*{几何分布例题}
+\begin{ExampleBox}
+In order to start a board game, each player rolls fair six-sided dice, one at a time, until a $6$ is obtained. Let $X$ be the number of goes a player takes to start the game. Explain what does $X>4$ means in this scenario and find $P(X>4)$
+\tcblower
+此题的场景不就是一个飞行棋吗？扔出6才可以出动飞机。因此$X\sim Geo(\frac{1}{6})$，这就是将题意翻译成数学语言的结果。
+那么$X>4$可以有两种解释，第一种，扔5次，6次，7次等等才能得到6启动游戏；第二种，前4次都没有扔出6。
+
+而这两种解释也带来了三种求算概率的方法。
+
+
+第一种：正面累加
+\begin{flalign*}
+P(X=5)+P(X=6)+\ldots &= \frac{5}{6}^4\times \frac{1}{6} + \frac{5}{6}^5\times \frac{1}{6}+\ldots\\
+					 &=\frac{\frac{5}{6}^4\times \frac{1}{6}}{1-\frac{5}{6}}\\
+					 &=\frac{5}{6}^4
+\end{flalign*}
+这里需要注意，其实应该是一个等比数列的sum to infinity的公式。
+
+第二种:反面推导
+用1减去小于等于4次的概率也是可以的。而且这种方法的好处是有限项。
+\begin{flalign*}
+1&-P(X=1)-P(X=2)+\ldots+P(X=4)\\
+ &=1-\left(\frac{1}{6}+\frac{5}{6}\times\frac{1}{6}+\frac{5}{6}^2\times\frac{1}{6}+ \frac{5}{6}^3\times\frac{1}{6}\right)\\
+					 &=\frac{5}{6}^4
+\end{flalign*}
+
+第三种:最巧妙的解法
+在刚才的解释当中，只要前四次都是失败的，那么必定需要更多的次数。因此此题完全等同于求算连续四次失败的概率，因此求算起来最为简单
+\[
+	P(X>4)=(\frac{5}{6})^4
+\]
+
+这三种方案当中，无论是哪一种方法都可以帮助解决此类的问题，没有高下之分。
+\end{ExampleBox}
+

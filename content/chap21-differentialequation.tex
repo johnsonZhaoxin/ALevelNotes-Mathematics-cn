@@ -1,0 +1,133 @@
+\chapter{微分方程}
+微分方程是工程学的通行证，线性代数是计算机的奠基石
+
+\section*{学习目标}
+\begin{todolist}
+	\item 根据文字陈述列出表示速率相关的微分方程
+	\item 通过积分求算可分离变量的一阶微分方程的\gls{generalsolu}
+	\item 根据\gls{initialcondition}求算微分方程的\gls{particularsolu}
+	\item 利用微分方程解决生活中的具体问题
+\end{todolist}
+\clearpage
+
+\section{微分方程的基本概念}
+首先，看一下微分方程的定义：
+\begin{definition}
+表示一个未知的函数$y$，该函数的导数$\frac{\d y}{\d x}$，以及自变量$x$之间关系的方程
+\end{definition}
+也就是表达式中函数有导数$\frac{\d y}{\d x}$,$y$或者$x$的方程。这样的方程的\textbf{解}并不是一个特定值，而是$y$关于$x$的函数关系。
+
+\subsection*{微分方程的阶}
+在一个微分方程中，最高阶数的导数称之为该微分方程的阶数。比如
+\[
+	\frac{\d y}{\d x}=y \quad \frac{\d^2 y}{\d x^2} +\frac{\d y}{\d x}=y
+\]
+分别就是一阶微分方程和二阶微分方程
+
+\subsection*{微分方程的通解}
+\[
+	\frac{\d y}{\d x}=y
+\]
+就是一个较为简单的微分方程，如果用文字性的语言就是：一个函数的导数和这个函数自身相等。那么$y=e^x$就从脑海当中浮现出来了。这样的函数关系显然满足$\frac{\d y}{\d x}=e^x=y$。因此它就是这个微分方程的解。问题解决了，但是没有完全解决，因为显然$y=5e^x$，$y=-3e^x$，$y=\sqrt{2} e^x$，甚至$y=0$也是满足要求的解。但是仔细观察，这些函数都可以$y=C\cdot e^x$这样的函数表达，其中$C$为一个待定的常数。因此这样的形式叫做微分方程的通解。
+
+\subsection*{初始条件和特解}
+
+\[
+	\frac{\d y}{\d x}=y \quad y(0)=3
+\]
+$y(0)=3$给定了代求函数$y$上的点，这样的信息被我们称之为初始条件。仅需要将其带入到通解$y=C\cdot e^x$当中，就可以确定该待定系数$C=3$。同时满足微分方程的解就只剩下$y=3\cdot e^x$这样唯一的一个解，也被称之为该方程的特解。
+\clearpage
+
+\section{求解过程}
+前面讲了这些基本概念，但是微分方程的求解还是没有涉及。现在开始处理\textbf{可分离的、一阶}微分方程。在A Level p3的考试当中，微分方程并不是特别复杂的。在这里的可分离的意思是$x$和$y$可以分开。
+\begin{ExampleBox}
+求解$\frac{\d y}{\d x}=y$
+\tcblower
+\begin{align*}
+\frac{1}{y}\d y &= 1\d x\\
+\int \frac{1}{y}\d y &= \int 1\d x\\
+\ln |y| &= x+C_0\\
+y &=e^{x+C_0}\\
+&=e^x\cdot e^{C_0} \\
+&=C\cdot e^x
+\end{align*}
+\end{ExampleBox}
+
+\begin{TaskBox}
+在上面的过程当中，稍微有一些跳步，比如$y$的正负的讨论。可以自己尝试一下，如果$y$是负数的情况，最终的通解形式应该是如何的。
+\end{TaskBox}
+
+因此。整理一下任何\textbf{可分离的，一阶}微分方程都是可以通过各种运算将导数分解为两个微分：
+\[
+	g(y) \d y =f(x) \d x
+\]
+的形式。其中，$g(y)$是关于$y$的函数，$f(x)$是关于$x$的函数/。下一步就是两边同时做积分，得到：
+\[
+	\int g(y) \d y =\int f(x) \d x
+\]
+因此最后结果为：
+\[
+	G(y) =F(x)+C
+\]
+到这一步基本上就算解决完毕了。只需要将$y$整理分离就行，这样就可以得到通解了。
+
+\begin{TaskBox}
+The variables $x$ and $\theta$ satisfy the differential equation
+\[
+	x\cos^2\theta \frac{\d x}{\d \theta} =2\tan\theta +1,
+\]
+for $0\leqslant \theta \leqslant \frac{1}{2}\pi$ and $x > 0$. It is given that $x=1$ when $\theta =\frac{1}{4}\pi$. Find the particular solution to the differential equation.
+\makebox{}\hfill Adapted from 2018 summer qp32 Q6
+\end{TaskBox}
+\clearpage
+
+
+\section{微分方程在实际场景的运用}
+就像之前所说，微分方程是工程学的通行证，原因就是在实际情景中很多关系都可以通过微分关系进行描述，比较经典的有降温曲线，人口的\href{https://www.maa.org/press/periodicals/loci/joma/logistic-growth-model-background-logistic-modeling}{逻辑斯谛增长}，化学元素的衰变等等都是通过最基本的微分方程发现的规律。
+
+\subsection*{速率作为对时间的导数}
+上面提及的场景中当中，第一步就是针对速率进行导数的确定，这里的速率也就是我们所说的``The
+ rate of change of some variables''，因此就是某一个变量对时间的\textbf{导数}。比如人口的变化率可以计作$\frac{\d P}{\d t}$，温度的变化率可以计作$\frac{\d T}{\d t}$。这里的变量都是具有特定意义的，可以认为是与时间有关的函数。
+
+\subsection*{应用类问题的基本思路}
+这一类的问题是微分方程的常见考察方式，会在文字当中描述微分关系，然后再给定初始条件，进而求算最终的结果。整个流程可以分为以下几步：
+\begin{SummBox}
+\begin{itemize}
+	\item 根据文字表述，列出变量的微分方程，如果文字当中有出现\textbf{propportional}这样的字眼，需要增加比例系数$k$，如果是下降的速率的话，微分方程当中等于号的右边必须加负号，来确保导数小于$0$
+	\item 通过分离变量，再积分的方法求解微分方程的通解
+	\item 带入给定的初始条件或者其他信息，确定该微分方程的特解，借此确定函数关系
+	\item 一旦变量的与时间的关系确定之后，就可以求算其他的信息
+\end{itemize}
+\end{SummBox}
+
+一条完整的例题进行讲解
+\begin{ExampleBox}
+In a certain chemical reaction, a compound A is formed from a compound B. The masses of A and B at time t after the start of the reaction are $x$ and $y$ respectively and the sum of the masses is equal to $50$ throughout the reaction. At any time the rate of increase of the mass of A is proportional to the mass of B at that time.
+
+Explain why $\frac{\d y}{\d t}=k(50-x)$ , where $k$ is a constant.
+
+It is given that $x = 0$ when $t = 0$, and $x = 25$ when $t = 10$.
+
+Solve the differential equation and express $x$ in terms of $t$.
+\makebox{}\hfill Adapted from 2017 summer qp33 Q8
+\tcblower
+
+Because as stated in the text ``the increase of mass is proportional to the mass of B at that time'', and the sum of masses of A and B is $50$. thus $\frac{\d x}{\d t} = k y$ and $y=50-x$
+
+\begin{align*}
+\frac{\d x}{\d t} &= k(50-x)\\
+\frac{1}{50-x} \d x &= k\d t\\
+\int \frac{1}{50-x} \d x &= \int k\d t\\
+\ln |50-x| &= kt + C\\
+50-x &=C\cdot e^{kt}\\
+\end{align*}
+plugging in $x=0$ when $t=0$ and $x=25$ when $t=10$:
+\begin{cases}
+50-0 = C\cdot e^{k\cdot 0}\\
+50-25 = C\cdot e^{k\cdot 10}
+\end{cases}
+thus $C=50$ , $k=-0.0693$.
+
+the amount of A is $x=50-50\cdot e^{-0.0693 t}$ 
+\end{ExampleBox}
+

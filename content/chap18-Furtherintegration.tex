@@ -1,0 +1,244 @@
+\chapter{进阶积分}
+Tout les effets dans la nature ne sont que resultats mathematiques d’un petit noinbre de lois imuables
+\par
+All the effects of Nature are only the mathematical consequences of a small number of immutable laws. \\
+\makebox{}\hfill——Pierre Laplace
+
+\section*{学习目标}
+\begin{todolist}
+ \item 利用换元法求算定积分或者不定积分
+ \item 求算两层复合的积分，包括$e^{ax+b}$,$\frac{1}{ax+b}$,$\sin({ax+b})$,$\cos({ax+b})$,$\sec^2({ax+b})$,$\frac{1}{x^2+a^2}$
+ \item 处理$\frac{k\cdot f'(x)}{f(x)}$这一类型利用$\ln$的积分
+ \item 求算有理式的积分
+ \item 利用三角恒等式化简，并求算积分
+ \item 使用分部积分法求算积分
+\end{todolist}
+\clearpage
+
+\section{换元法}
+
+\subsection*{基本函数衍生函数的积分}
+对于求算微分，有非常重要的链式法则，而这一章节处理积分，则有对应的\gls{u-sub}。比如对比一下这样的两个过程。
+%%% 这个编译可能会有问题
+\begin{ExampleBox}
+\begin{multicols}{2}
+求算$\frac{\d}{\d x}(ax+b)^n$
+
+
+\begin{align*}
+y &= u^n \quad u=(ax+b)\\
+\frac{\d y}{\d x} &=\frac{\d y}{\d u} \cdot \frac{\d u}{\d x}\\
+&=n\cdot u^{n-1} \cdot a\\
+&=n \cdot (ax+b)^{n-1} \cdot a\\
+&=a\cdot n (ax+b)^{n-1}
+\end{align*}
+\vfill\null
+\columnbreak
+求算 $\int (ax+b)^n \d x$
+
+
+\begin{align*}
+\int u^n \d u &= \frac{1}{n+1}\cdot u ^{n+1}\\
+\text{Let } u &=(ax+b) \quad \text{Then }\frac{\d u}{\d x}=a\\
+\int (ax+b)^n \d x&=\frac{1}{a}\int (ax+b)^n a\cdot \d x\\
+&=\frac{1}{a} \int (ax+b)^n \d u\\
+&=\frac{1}{a} \int u^n \d u\\
+&=\frac{1}{a}\cdot \frac{1}{n+1} \cdot u^{n+1}+C\\
+&=\frac{1}{a(n+1)}\cdot (ax+b)^{n+1}+C
+\end{align*}
+\end{multicols}
+\end{ExampleBox}
+
+因此这种积分方法被我们称之为换元法，是用于解决嵌套的复合函数的积分方案。核心过程在找出可以被当做整体$u$的部分，不过在ALevel的考试当中，都是简单的两层嵌套。下表把常见的考试当中的积分结果都罗列出来，可以自己尝试利用u-substitution进行重做和验证
+\begin{table}[H]
+\begin{tblr}{|c|c|}
+Integrand & Result\\
+\hline
+$\int e^{ax+b} \d x$ & $\frac{1}{a} e^{ax+b}+C$\\
+$\int \frac{1}{ax+b} \d x$ & $\frac{1}{a} \ln |ax+b|+C$\\
+$\int \sin (ax+b)\d x$ & $-\frac{1}{a} \cos(ax+b)+C$\\
+$\int \cos (ax+b) \d x$ & $\frac{1}{a}\sin(ax+b) +C$\\
+$\int \sec^2(ax+b) \d x$ & $\frac{1}{a}\tan(ax+b) +C$\\
+$\int (ax+b)^n \d x$ & $\frac{1}{a(n+1)}\cdot (ax+b)^{n+1}+C$\\
+$\int \frac{1}{x^2+a^2} \d x$ & $\frac{1}{a}\tan^{-1}(\frac{x}{a})+C$\\
+\end{tblr}
+\end{table}
+
+\begin{TaskBox}
+思考一下，为什么第二个结果当中会有$|ax+b|$绝对值
+\end{TaskBox}
+
+
+\subsection*{更复杂的换元法}
+因此换元法基本操作流程是：
+\begin{enumerate}
+	\item 识别嵌套函数的内层，将整体表示为$u$
+	\item 明确$\d x$和$\d u$之间的联系
+	\item 将integrand改写为关于$u$的表达式
+	\item 将微分$\d x$通过等价变形，改写成$\d u$;
+	\item 整体表达式当中不再包含任何$x$，而是关于$u$，且更简单的积分。
+	\item 最后把$u$替换回$x$即可
+\end{enumerate}
+
+写成符号式的语言就是:
+\[
+	\int f(x) \d x =\frac{\d x}{\d u} \cdot \int f(g(u))  \d u \quad  \text{given that }x=g(u)
+\]
+不要看符号里$f(g(u))$的形式很复杂，实际上反而会更简单。
+
+\begin{ExampleBox}
+Use the substitution $u=2x+1$ to find $\int 4x\sqrt{2x+1} \d x$
+\tcblower
+\begin{align*}
+ u=2x+1 &\Rightarrow x=\frac{u-1}{2}\\
+        &\Rightarrow \frac{\d u}{\d x}=2\\
+        &\Rightarrow \d x= \frac{1}{2} \d u\\
+ \int 4x\sqrt{2x+1} \d x &=\int 4\cdot \frac{u-1}{2}\sqrt{u} \cdot \frac{1}{2} \d u\\
+        &=(u-1)\sqrt u \d u\\
+        &=u^{\frac{3}{2}} -u^{\frac{1}{2}} \d u\\
+        &=\frac{1}{\frac{3}{2}+1}\cdot u^{\frac{5}{2}}-\frac{1}{\frac{1}{2}+1}\cdot u^{\frac{3}{2}}+C\\
+        &=\frac{2}{5}(2x+1)^{\frac{5}{2}}-\frac{2}{3}(2x-1)^{\frac{3}{2}}+C
+\end{align*}
+\end{ExampleBox}
+在考试当中，只需要按照顺序做下去，必定可以将最终表达式化简为更加简单，更加容易积分的形式，这也是使用换元法的原因。
+
+\subsection*{定积分的换元法}
+如果求算的是定积分，那么上方的表达式只需要改写为：
+\[
+	\int_a^b f(x) \d x =\frac{\d x}{\d u}\int_{u_a}^{u_b} f(g(u)) \d u
+\]
+就可以了，其中，被积表达式的上下限将会从$a$和$b$改变为对应$u_a$和$u_b$
+
+\subsection*{处理含有$\frac{f'(x)}{f(x)}$的积分}
+这个部分依旧属于换元法的应用范畴，首先给出结论：
+\[
+	\int k \frac{f'(x)}{f(x)}\d x =k\cdot \ln|f(x)|+C
+\]
+
+接下来是证明过程：
+\begin{ExampleBox}
+Let $u=f(x)$ thus $f'(x) =\frac{\d u}{\d x}$
+\begin{align*}
+ \int k \frac{f'(x)}{f(x)}\d x &=k\cdot \int \frac{1}{u}\cdot \frac{\d u}{\d x} \d x\\
+ &=k\cdot \frac{1}{u} \d u\\
+ &=k\cdot \ln |u|+C\\
+ &=k\cdot \ln |f(x)|+C\\
+\end{align*}
+\end{ExampleBox}
+
+所以，是不是掌握了换元法，很多复杂的积分都会变简单。只不过，比较麻烦的地方是需要能够识别出导数部分。
+\clearpage
+
+\section{有理式的积分}
+在Pure Mathematics 3的开头部分，学习了有理式可以等价地写成多个低次有理式之和、差。这里的低次有理式一般是1次或者2次的。因此这些有理分式的积分将更为简单，其结果罗列如下：
+\begin{align*}
+  \int \frac{k}{ax+b} \d x &=\frac{k}{a} \ln |ax+b|+C\\
+  \int \frac{k}{(ax+b)^2} \d x &= -\frac{k}{a}\cdot \frac{1}{ax+b}+C\\
+\end{align*}
+因此只要一个有理式，通过长除法以及其他方式，转变成Partial Fraction，再进行积分即可
+
+\begin{ExampleBox}
+ Let $f(x)=\frac{8x^2+9x+8}{(1-x)(2x+3)^2}$, evaluate $\int f(x) \d x$
+
+
+ \makebox{}\hfill Adapted From 2017 winter qp32 Q8 
+ \tcblower
+ 首先，可以根据之前所学，$f(x)$必定可以降次整理为$\frac{A}{1-x} + \frac{B}{(2x+3)} +\frac{C}{(2x+3)^2}$，通过展开，或者代入特殊值，可以确定$A=1,B=-2,C=5$。因此，再进行积分：
+\begin{align*}
+ \int f(x)\d x &=\int \frac{1}{1-x} -\frac{2}{2x+3} +\frac{5}{(2x+3)^2} \d x\\
+               &=\int \frac{1}{1-x} \d x -\int \frac{2}{2x+3} \d x +\int \frac{5}{(2x+3)^2} \d x\\
+               &=-\ln |1-x|-\ln |2x+3|-\frac{5}{2}\cdot\frac{1}{2x+3}+C\\
+\end{align*}
+\end{ExampleBox}
+在考试中一般会将分母因式分解好，因此操作难度又小了一点。
+\clearpage
+
+\section{含有三角比的积分}
+\subsection*{只含有一个三角比的积分}
+本章是结合\ref{sec:Trig Identity}和\ref{subsec:Double Angle Formula}，求算含有复杂的三角比的积分。
+经常需要利用的恒等关系有:
+\begin{align*}
+\cos^2 x &\equiv \frac{1}{2}(\cos 2x +1)\\
+\sin^2 x &\equiv \frac{1}{2}(1-\cos 2x)\\
+\sec^2 x+1 &\equiv \tan^2 x\\
+\end{align*}
+
+\begin{ExampleBox}
+ Find $\int \sin^4 x\d x$. 
+\tcblower
+ \begin{align*}
+  \sin^4 x &=\left( \sin^2 x\right)^2 \\
+           &=\frac{1}{4}\cdot (1-\cos 2x)^2\\
+           &=\frac{1}{4}(1-2\cos 2x+\cos^2 2x)\\
+           &=\frac{1}{4}-\frac{1}{2} \cos 2x +\frac{1}{4}\cdot \frac{\cos 4x+1}{2}\\
+           &=\frac{3}{8}-\frac{1}{4}\cos 2x +\frac{1}{8} \cos 4x\\
+ \end{align*}
+所以，原来的积分就可以改写为如下的形式：
+\begin{align*}
+ \int \sin^4 x\d x &=\int \left( \frac{3}{8}-\frac{1}{4}\cos 2x +\frac{1}{8} \cos 4x\right) \d x\\
+                  &= \frac{3}{8}x-\frac{1}{8}\sin 2x+\frac{1}{32}\sin 4x +C
+\end{align*}
+不要认为被积部分越短就越容易积分，应该是被积部分越接近初等函数的形式，积分起来就越容易。比如$\sin^4 x$ 和$\sin 4x$明显就是后面更接近基本形式，因此容易积分。
+\end{ExampleBox}
+
+
+\subsection*{处理$\cos^m x \cdot \sin^n x$的积分}
+这一部分出题的频率并不高，并且最高次最多是3。因此只需要了解\textbf{递归}的思路即可。
+
+核心表达式为：
+\begin{align*}
+  \int \cos^m x \cdot \sin^n x \d x &= \frac{1}{m+n}\cos^{m-1}x \sin^{n+1} x+\frac{m-1}{m+n}\cdot\int \cos^{m-2} x \sin^n x \d x\\
+  &=-\frac{1}{m+n}\cos^{m+1}x \sin^{n-1} x+\frac{m-1}{m+n}\cdot\int \cos^{m} x \sin^{n-2} x \d x
+\end{align*}
+该公式的好处是，无论如何都可以逐渐地降低被积部分的$\cos$和$\sin$的次数，然后当被积部分出现了$\int \cos x \sin x \d x$的时候，就可以使用二倍角公式进行求算了。
+\clearpage
+
+\section{分部积分法}
+\gls{bypart}是另外一个重要的求算积分的方法，核心本质是微分当中的乘法法则的逆向运用，主要是求算微分不是$\d x$而且其他表达式。其基本形式如下：
+\[
+  \int u\d v= uv-\int v\d u
+\]
+有些小可爱可能会有以为，好像变形了，又好像没变。因为后面依旧会有一个积分$\int v\d u$需要你去做。那么这种分部积分法的能被拿出来的讲的原因就只有一个，就是$\int v\d u$的求算必然比$\int u\d v$容易很多。
+
+\begin{ExampleBox}
+\begin{multicols}{2}
+求算$\int \ln x \d x$
+
+
+利用分部积分法，将$\ln x$视作$u$，将$x$视作$v$，因此改写为：
+\begin{align*}
+\int \ln x \d x &= \ln x \cdot x -\int x \d (\ln x)\\
+                &= x\cdot \ln x -\int x \cdot \frac{1}{x}\d x\\
+                &=x\cdot \ln x-\int 1 \d x\\
+                &=x\cdot \ln x -x +C\\
+\end{align*}
+
+\vfill\null
+\columnbreak
+求算$\frac{\d}{\d x} x(\ln x - 1)$
+
+
+利用乘积法则求算导数
+\begin{align*}
+\frac{\d}{\d x} x(\ln x - 1) &= 1\cdot (\ln x-1)+x\cdot (\frac{1}{x})\\
+&=\ln x -1 +1\\
+&=\ln x
+\end{align*}
+\end{multicols}
+\end{ExampleBox}
+所以说是乘积法则的逆向运用。选定函数作为$u$是有优先顺序的。一般而言记住如下的规则``LATE''
+\[
+  \text{Log}>\text{Algebra}>\text{Trig}>\text{Expo}
+\]
+
+\begin{TaskBox}
+$\int \frac{\ln x}{\sqrt x}\d x = \int \ln x \cdot x^{-\frac{1}{2}} \d x$ 然后有两种处理方案：
+
+一个是把$\ln x$作为$u$，将$\cdot x^{-\frac{1}{2}} \d x$作为$\d v$；\\
+另外一个则是把 $x^{-\frac{1}{2}}$作为$u$，把$\ln x \d x$作为$\d v$。
+
+思考一下，那个方法更容易得到最终结果。并且求算该积分
+\end{TaskBox}
+
+
+
