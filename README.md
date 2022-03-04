@@ -1,8 +1,11 @@
 # ALevelNotes-Mathematics-cn
 赵三金用于A-Level数学9709的笔记，中文版
 
-# 编译方式
-使用xelatex进行编译，会自动生成glossary附录
+# 编译方式和注意事项
+* 使用xelatex进行编译，会自动生成glossary附录
+* 需要修改\graphicspath为自己的目录，auximage的绝对路径
+* 或者直接修改为\graphicspath{../auximage/}这种相对路径的方式
+
 
 # todo
 * 部分图片位置和大小调整
